@@ -1,0 +1,54 @@
+Add the dependencies
+-----------------------
+1. spring-context
+2. aspectjrt
+3. aspectjweaver
+
+class ShopingCart {
+    //Logging
+	//Authentication & Autherization
+	//Sanatize the data
+	//these all above are cross cutting concern so seprate it out
+	public void checkout() {
+		syso("shoping");
+	}
+}
+
+4. Create a class LoggingAspect and annotate with @Aspect
+
+@Aspect
+class LoggingAspect {
+    //run this method before the checkout executes
+	
+    public void logger() {
+		syso("loggers");
+	}
+}
+
+5. run this method before the checkout executes so define @Before() annotation.
+@Aspect
+class LoggingAspect {
+    //run this method before the checkout executes
+	@Before("execution(* ShopingCart.checkout())")  // * for any return type
+    public void logger() {
+		syso("loggers");
+	}
+}
+
+6. Enable the asspectjautoproxy in the configuration file
+@Configuration
+@ComponentScan(basePackages = "")
+@EnableAspectJAutoProxy
+public class BeanConfig {
+}
+
+7. add @component annptation in the aspect class so spring can find it other it will not work.
+@Aspect
+@Component
+class LoggingAspect {
+    //run this method before the checkout executes
+	
+    public void logger() {
+		syso("loggers");
+	}
+}
